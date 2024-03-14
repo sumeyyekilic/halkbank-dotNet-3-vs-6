@@ -27,7 +27,7 @@ DataTable table = new DataTable();
 
 //C# 10 öncesi:
 Func<int, bool> isEven = (int number) => number % 2 == 0;
-var anonym = new { Name = "Türkay", Age = 44 };
+var anonym = new { Name = "Sümeyye", Age = 44 };
 
 //C# 10
 var isOdd = (int number) => number % 2 == 1;
@@ -65,10 +65,9 @@ Console.WriteLine($"obj1.Equals(obj2) karşılaştırma sonucu: {obj1.Equals(obj
 Console.WriteLine($"obj1.GetHashCode() == obj2.GetHashCode() karşılaştırma sonucu: {obj1.GetHashCode() == obj2.GetHashCode()}");
 
 Point point = new Point();
-
 List<Customer> customers = new()
 {
-    new(){ Name = "Türkay", Address = new Address("Sümer mah","Eskişehir","26140","Türkiye")},
+    new(){ Name = "Sümeyye", Address = new Address("Sümer mah","Eskişehir","26140","Türkiye")},
     new(){ Name = "Derya", Address = new Address("Osmanağa mah","İstanbul","34802","Türkiye")},
 };
 
@@ -78,8 +77,38 @@ Console.WriteLine($"Adresin sahibi {customer?.Name}");
 
 #endregion
 
+#region Tuples, mix decleration, deconstructions
+Tuple<int, int> divide(int number1, int number2)
+{
+    Tuple<int, int> result = Tuple.Create(number1 / number2, number1 % number2);
+    return result;
 
-#region Caller argument Expression attr
+    //return number1 / number2; 
+}
+
+(int, int) groupingDivide(int number1, int number2)
+{
+
+    return (number1 / number2, number1 % number2);
+
+    //return number1 / number2; 
+}
+
+var divideResult = divide(14, 3);
+
+(int bolumSonucu, int kalan) = (divideResult.Item1, divideResult.Item2);
+
+int p, q;
+(p, q) = (5, 10);
+(string a, string b) = ("Sümeyye", "Kılıç");
+(p, bool isOk) = (90, false);
+
+(int sonuc, int mod) = groupingDivide(14, 3);
+
+Console.WriteLine($"Sonuç: {sonuc} Kalan:{mod}");
+#endregion
+
+#region Caller argument Expression attr 'u geldi !
 
 void checkCondition(bool condition, [CallerArgumentExpression(nameof(condition))] string? logMessage = null) //booll olan bu koşul neydi loglamak istiyoruz.
 {
@@ -87,16 +116,12 @@ void checkCondition(bool condition, [CallerArgumentExpression(nameof(condition))
     Console.WriteLine($"parametreye gönderilen koşul :{logMessage}. sonuc ise : {condition}");
 }
 
-(int a, int b) = (5, 3);
-checkCondition(a > b);
+(int s, int d) = (5, 3);
+checkCondition(s > d);
 
 string test = "test";
 checkCondition(test.Length < 2);
 #endregion
-
-
-    
-
 
 #region Exception Guards
 
